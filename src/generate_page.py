@@ -2,7 +2,7 @@ from block_markdown import *
 import os
 
 
-def generate_page(from_path, template_path, dst_path):
+def generate_page(from_path, template_path, dst_path, basepath):
     print(f"Generating page from {from_path} to {dst_path} using {template_path}")
     with open(from_path, 'r') as f:
         md = f.read()
@@ -12,6 +12,8 @@ def generate_page(from_path, template_path, dst_path):
     title = extract_title(md)
     tmpl.replace("\{\{ Title \}\}", title)
     tmpl.replace("\{\{ Content \}\}", html_string)
+    tmpl.replace("href=\"/", f"href=\"{basepath}")
+    tmpl.replace("src=\"/", f"src=\"{basepath}")
     dirs = dst_path.split("/")
     path = dirs[0]
     if not os.path.exists(path):
@@ -28,13 +30,14 @@ def generate_page(from_path, template_path, dst_path):
         f.write(html_string)
 
 
-def generate_pages_recursive(dir_path_content, template_path, dst_dir_path):
+def generate_pages_recursive(dir_path_content, template_path, dst_dir_path, basepath):
     if os.path.isfile(dir_path_content):
-        generate_page(dir_path_content, template_path, dst_dir_path)
+        generate_page(dir_path_content, template_path, dst_dir_path, basepath)
         return
     for entry in os.listdir(dir_path_content):
         generate_pages_recursive(
             os.path.join(dir_path_content, entry),
             template_path,
-            os.path.join(dst_dir_path, entry)
+            os.path.join(dst_dir_path, entry),
+            basepath
         )

@@ -1,8 +1,11 @@
 from textnode import *
 import os
 import shutil
-from block_markdown import extract_title
 from generate_page import generate_page, generate_pages_recursive
+import sys
+
+
+basepath = "/" if sys.argv[1] == "" else sys.argv[1]
 
 
 def copy_files(path, dst):
@@ -31,8 +34,8 @@ def start_copy_files(path, dst):
 
 
 def main():
-    start_copy_files("./static/", "./public")
-    generate_pages_recursive("content/", "template.html", "public/")
+    start_copy_files("static/", "public")
+    generate_pages_recursive("content/", "template.html", "public/", basepath)
 
 
 if __name__ == "__main__":
