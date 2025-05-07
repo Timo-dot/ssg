@@ -1,11 +1,8 @@
 from textnode import *
 import os
 import shutil
-from generate_page import generate_page, generate_pages_recursive
+from generate_page import generate_pages_recursive
 import sys
-
-
-basepath = "/" if sys.argv[1] == "" else sys.argv[1]
 
 
 def copy_files(path, dst):
@@ -34,8 +31,9 @@ def start_copy_files(path, dst):
 
 
 def main():
-    start_copy_files("static/", "public")
-    generate_pages_recursive("content/", "template.html", "public/", basepath)
+    basepath = "/" if sys.argv[1] == "" else sys.argv[1]
+    start_copy_files("static/", "docs")
+    generate_pages_recursive("content/", "template.html", "docs/", basepath)
 
 
 if __name__ == "__main__":
