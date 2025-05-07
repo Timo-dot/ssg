@@ -12,8 +12,8 @@ def generate_page(from_path, template_path, dst_path, basepath):
     title = extract_title(md)
     tmpl.replace("\{\{ Title \}\}", title)
     tmpl.replace("\{\{ Content \}\}", html_string)
-    tmpl.replace("href=\"/", f"href=\"{basepath}")
-    tmpl.replace("src=\"/", f"src=\"{basepath}")
+    tmpl.replace("href=\" /", f"href=\" {basepath}")
+    tmpl.replace("src=\" /", f"src=\" {basepath}")
     dirs = dst_path.split("/")
     path = dirs[0]
     if not os.path.exists(path):
