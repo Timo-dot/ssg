@@ -9,13 +9,20 @@ def generate_page(from_path, template_path, dst_path, basepath):
     with open(template_path, 'r') as f:
         tmpl = f.read()
     html_string = markdown_to_html_node(md).to_html()
+    #print(html_string)
     title = extract_title(md)
-    tmpl.replace("\{\{ Title \}\}", title)
-    tmpl.replace("\{\{ Content \}\}", html_string)
-    tmpl.replace("href=\"/", f"href=\"{basepath}")
-    tmpl.replace("src=\"/", f"src=\"{basepath}")
+    #print(title)
+    html_title = tmpl.replace("{{ Title }}", title)
+    #print(html_title)
+    html_content = html_title.replace("{{ Content }}", html_string)
+    #print(html_content)
+    html_href = html_content.replace("href=\"/", f"href=\"{basepath}")
+    #print(html_href)
+    html_full = html_href.replace("src=\"/", f"src=\"{basepath}")
+    #print(html_full)
     dirs = dst_path.split("/")
     path = dirs[0]
+    #print(f"path={path}")
     if not os.path.exists(path):
         if not os.path.isfile(path):
             os.mkdir(path)
@@ -23,11 +30,14 @@ def generate_page(from_path, template_path, dst_path, basepath):
             open(path, 'x')
     for dir in dirs[1:-1]:
         path = os.path.join(path, dir)
+        #print(f"path={path}")
         if not os.path.exists(path):
             if not os.path.isfile(path):
                 os.mkdir(path)
-    with open(os.path.join(path, dirs[-1].replace(".md", ".html")), 'w') as f:
-        f.write(html_string)
+    path = os.path.join(path, dirs[-1].replace(".md", ".html"))
+    #print(f"path={path}")
+    with open(path, 'w') as f:
+        f.write(html_full)
 
 
 def generate_pages_recursive(dir_path_content, template_path, dst_dir_path, basepath):

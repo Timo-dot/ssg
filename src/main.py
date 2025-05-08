@@ -32,7 +32,7 @@ def start_copy_files(path, dst):
 
 def main():
     basepath = "/" if len(sys.argv) == 1 else sys.argv[1]
-    start_copy_files("static/", "docs")
+    start_copy_files("static/", "docs/")
     generate_pages_recursive("content/", "template.html", "docs/", basepath)
 
 
